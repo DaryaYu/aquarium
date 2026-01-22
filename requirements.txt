@@ -8,3 +8,6 @@ setuptools==80.9.0
 six==1.17.0
 threadpoolctl==3.6.0
 wheel==0.45.1
+matplotlib==3.10.8
+matplotlib-inline @ file:///home/task_176277917228657/conda-bld/matplotlib-inline_1762779187253/work
+seaborn==0.13.2
