@@ -3,11 +3,12 @@ from pathlib import Path
 import pandas as pd
 
 
-RAW_DATA_FOLDER_PATH = 'data/ml-1m'
+ROOT = Path(__file__).resolve().parent
+RAW_DATA_FOLDER_PATH = ROOT / 'data' / 'ml-1m'
 
 
 def read_file(file_name: str, columns: list): 
-    file_path = Path(RAW_DATA_FOLDER_PATH) / file_name
+    file_path = RAW_DATA_FOLDER_PATH / file_name
     return pd.read_csv(
         file_path,
         sep='::',
