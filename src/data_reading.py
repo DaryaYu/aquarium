@@ -2,7 +2,8 @@ from pathlib import Path
 import pandas as pd
 
 
-ROOT = Path(__file__).resolve().parent
+#ROOT = Path(__file__).resolve().parent
+ROOT = Path.cwd().parent
 RAW_DATA_FOLDER_PATH = ROOT / 'data' / 'raw' / 'ml-1m'
 
 
