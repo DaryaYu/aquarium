@@ -2,11 +2,15 @@ import os
 import zipfile
 import urllib.request
 from urllib.parse import urlparse
+from pathlib import Path
 
 
 URL = 'https://files.grouplens.org/datasets/movielens/ml-1m.zip'
-DATA_DIR = 'data'
+DATA_DIR = 'data/raw'
 
+
+# Create data directory if it doesn't exist
+Path(DATA_DIR).mkdir(parents=True, exist_ok=True)
 
 # Retrieve zip archive name
 zip_name = os.path.basename(urlparse(URL).path)

@@ -1,10 +1,9 @@
-import os
 from pathlib import Path
 import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parent
-RAW_DATA_FOLDER_PATH = ROOT / 'data' / 'ml-1m'
+RAW_DATA_FOLDER_PATH = ROOT / 'data' / 'raw' / 'ml-1m'
 
 
 def read_file(file_name: str, columns: list): 
