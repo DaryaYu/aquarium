@@ -7,7 +7,7 @@ def predict_rating_cf_item_based(
         movie_id: int, 
         train_prep: pd.DataFrame,
         sim_df: pd.DataFrame,
-        k: int = 10
+        n: int = 10
     ) -> float:
 
     if user_id not in train_prep.index or movie_id not in train_prep.columns:
@@ -21,13 +21,14 @@ def predict_rating_cf_item_based(
     valid_items_list = user_ratings.drop(movie_id).dropna().index
 
     # Get top k movies by similarity
-    top_k_similarity = sim_df[movie_id][valid_items_list]\
-        .sort_values(ascending=False).head(k)
+    top_n_similarity = sim_df[movie_id][valid_items_list]\
+        .sort_values(ascending=False)\
+        .head(n)
 
     # Get the user ratings for the top k movies
-    top_k_ratings = user_ratings.loc[top_k_similarity.index]
+    top_n_ratings = user_ratings.loc[top_n_similarity.index]
 
-    return np.dot(top_k_similarity.values, top_k_ratings.values) / np.sum(top_k_similarity.values)
+    return np.dot(top_n_similarity.values, top_n_ratings.values) / np.sum(top_n_similarity.values)
 
 
 def predict_rating_cf_user_based(
@@ -35,7 +36,7 @@ def predict_rating_cf_user_based(
         movie_id: int, 
         train_prep: pd.DataFrame,
         sim_df: pd.DataFrame,
-        k: int = 10
+        n: int = 10
     ) -> float:
 
     if user_id not in train_prep.index or movie_id not in train_prep.columns:
@@ -48,9 +49,40 @@ def predict_rating_cf_user_based(
     # Get top k neighbors that rated the movie
     neighbors = sim_df.loc[user_id]\
         .drop(user_id)[users_rated.index]\
-        .sort_values(ascending=False).head(k)
+        .sort_values(ascending=False)\
+        .head(n)
 
     # Get ratings of top k neighbors
     neighbor_ratings = users_rated.loc[neighbors.index]
 
     return np.dot(neighbors.values, neighbor_ratings.values) / np.sum(neighbors.values)
+
+
+def recommend(
+    user_id: int,
+    test: pd.DataFrame,
+    predict_fn,
+    train_prep: pd.DataFrame,
+    sim_df: pd.DataFrame,
+    n: int, 
+    k: int = 10
+):            
+
+    movie_list = test.movie_id.unique()
+    rated_movies = train_prep.loc[user_id].dropna().index.values
+    candidates = np.setdiff1d(movie_list, rated_movies)
+    
+    pred_ratings = []
+    for movie_id in candidates:
+        pred_rating = predict_fn(
+            user_id=user_id, 
+            movie_id=movie_id, 
+            train_prep=train_prep, 
+            sim_df=sim_df,
+            n=n
+        )
+        pred_ratings.append(pred_rating)
+    
+    return pd.DataFrame(pred_ratings, index=candidates).sort_values(by=0, ascending=False).head(k).index.values
+    
+    
