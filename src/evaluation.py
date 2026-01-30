@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from src.models.similarity_based_cf import recommend
 
 
 def temporal_split(
@@ -50,7 +49,8 @@ def evaluate_rmse(
 
 
 def evaluate_precision_at_k(
-    test: pd.DataFrame, 
+    test: pd.DataFrame,
+    recommend_k_fn,
     predict_fn, 
     train_prep: pd.DataFrame, 
     sim_df: pd.DataFrame, 
@@ -60,7 +60,7 @@ def evaluate_precision_at_k(
     
     precisions = []
     for user_id in test.user_id.unique():
-        rec = recommend(user_id=user_id, test=test, predict_fn=predict_fn, train_prep=train_prep, sim_df=sim_df, n=n, k=k)
+        rec = recommend_k_fn(user_id=user_id, test=test, predict_fn=predict_fn, train_prep=train_prep, sim_df=sim_df, n=n, k=k)
         fact = test[(test.user_id == user_id) & (test.rating>=4)].movie_id.values
         precisions.append(len(np.intersect1d(rec, fact)) / k)
         
