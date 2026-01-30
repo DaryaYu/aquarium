@@ -24,10 +24,9 @@ def temporal_split(
 
 def evaluate_rmse(
         test: pd.DataFrame, 
-        train_prep: pd.DataFrame, 
-        sim_df: pd.DataFrame, 
-        predict_fn
-        ) -> float:
+        predict_fn,
+        **predict_kwargs
+) -> float:
     preds, actuals = [], []
 
     for row in test.itertuples():
@@ -36,9 +35,8 @@ def evaluate_rmse(
 
         pred = predict_fn(
             user_id=user_id, 
-            movie_id=movie_id, 
-            train_prep=train_prep, 
-            sim_df=sim_df
+            movie_id=movie_id,
+            **predict_kwargs
         )
         
         if not np.isnan(pred):
@@ -51,16 +49,18 @@ def evaluate_rmse(
 def evaluate_precision_at_k(
     test: pd.DataFrame,
     recommend_k_fn,
-    predict_fn, 
-    train_prep: pd.DataFrame, 
-    sim_df: pd.DataFrame, 
-    n: int = 10, 
-    k: int = 10
+    k: int = 10,
+    **recommend_kwargs
 ):
     
     precisions = []
     for user_id in test.user_id.unique():
-        rec = recommend_k_fn(user_id=user_id, test=test, predict_fn=predict_fn, train_prep=train_prep, sim_df=sim_df, n=n, k=k)
+        rec = recommend_k_fn(
+            user_id=user_id,
+            test=test,
+            k=k,
+            **recommend_kwargs
+        )
         fact = test[(test.user_id == user_id) & (test.rating>=4)].movie_id.values
         precisions.append(len(np.intersect1d(rec, fact)) / k)
         

@@ -85,4 +85,3 @@ def recommend(
     
     return pd.DataFrame(pred_ratings, index=candidates).sort_values(by=0, ascending=False).head(k).index.values
     
-    
