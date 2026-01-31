@@ -9,6 +9,27 @@ def predict_rating_cf_item_based(
         sim_df: pd.DataFrame,
         n: int = 10
     ) -> float:
+    """
+    Predict a user rating for a movie using similarity based item-item collaborative filtering.
+
+    Parameters
+    ----------
+    user_id : int
+        ID of the user.
+    movie_id : int
+        ID of the target movie.
+    train_prep : pd.DataFrame
+        User-item rating matrix used for training.
+    sim_df : pd.DataFrame
+        Item-item similarity matrix.
+    n : int, optional
+        Number of nearest neighbor items to use.
+
+    Returns
+    -------
+    float
+        Predicted rating or NaN if user_id or movie_id is missing in the train set.
+    """
 
     if user_id not in train_prep.index or movie_id not in train_prep.columns:
        # print(f'Either user id {user_id} or movie id {movie_id} is missing in the data sample')
@@ -38,7 +59,28 @@ def predict_rating_cf_user_based(
         sim_df: pd.DataFrame,
         n: int = 10
     ) -> float:
+    """
+    Predict a user rating for a movie using similarity based user-user collaborative filtering.
 
+    Parameters
+    ----------
+    user_id : int
+        ID of the user.
+    movie_id : int
+        ID of the target movie.
+    train_prep : pd.DataFrame
+        User-item rating matrix used for training.
+    sim_df : pd.DataFrame
+        User-user similarity matrix.
+    n : int, optional
+        Number of nearest neighbor users to use.
+
+    Returns
+    -------
+    float
+        Predicted rating or NaN if user_id or movie_id is missing in the train set.
+    """
+    
     if user_id not in train_prep.index or movie_id not in train_prep.columns:
        # print(f'Either user id {user_id} or movie id {movie_id} is missing in the data sample')
         return np.nan
@@ -58,7 +100,7 @@ def predict_rating_cf_user_based(
     return np.dot(neighbors.values, neighbor_ratings.values) / np.sum(neighbors.values)
 
 
-def recommend(
+def recommend_k(
     user_id: int,
     test: pd.DataFrame,
     predict_fn,
@@ -66,7 +108,7 @@ def recommend(
     sim_df: pd.DataFrame,
     n: int, 
     k: int = 10
-):            
+) -> np.ndarray:            
 
     movie_list = test.movie_id.unique()
     rated_movies = train_prep.loc[user_id].dropna().index.values
