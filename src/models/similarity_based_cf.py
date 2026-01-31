@@ -110,7 +110,7 @@ def recommend_k(
     k: int = 10
 ) -> np.ndarray:
     """
-    Generate top-K movie recommendations for a user using a rating prediction function.
+    Generate top-K movie recommendations for a user using the rating prediction function.
 
     Parameters
     ----------
