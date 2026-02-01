@@ -9,6 +9,27 @@ def predict_rating_cf_item_based(
         sim_df: pd.DataFrame,
         n: int = 10
     ) -> float:
+    """
+    Predict a user rating for a movie using similarity based item-item collaborative filtering.
+
+    Parameters
+    ----------
+    user_id : int
+        ID of the user.
+    movie_id : int
+        ID of the target movie.
+    train_prep : pd.DataFrame
+        User-item rating matrix used for training.
+    sim_df : pd.DataFrame
+        Item-item similarity matrix.
+    n : int, optional (default=10)
+        Number of nearest neighbor items to use.
+
+    Returns
+    -------
+    float
+        Predicted rating or NaN if user_id or movie_id is missing in the train set.
+    """
 
     if user_id not in train_prep.index or movie_id not in train_prep.columns:
        # print(f'Either user id {user_id} or movie id {movie_id} is missing in the data sample')
@@ -38,6 +59,27 @@ def predict_rating_cf_user_based(
         sim_df: pd.DataFrame,
         n: int = 10
     ) -> float:
+    """
+    Predict a user rating for a movie using similarity based user-user collaborative filtering.
+
+    Parameters
+    ----------
+    user_id : int
+        ID of the user.
+    movie_id : int
+        ID of the target movie.
+    train_prep : pd.DataFrame
+        User-item rating matrix used for training.
+    sim_df : pd.DataFrame
+        User-user similarity matrix.
+    n : int, optional (default=10)
+        Number of nearest neighbor users to use.
+
+    Returns
+    -------
+    float
+        Predicted rating or NaN if user_id or movie_id is missing in the train set.
+    """
 
     if user_id not in train_prep.index or movie_id not in train_prep.columns:
        # print(f'Either user id {user_id} or movie id {movie_id} is missing in the data sample')
@@ -58,15 +100,40 @@ def predict_rating_cf_user_based(
     return np.dot(neighbors.values, neighbor_ratings.values) / np.sum(neighbors.values)
 
 
-def recommend(
+def recommend_k(
     user_id: int,
     test: pd.DataFrame,
-    predict_fn,
+    predict_fn: callable,
     train_prep: pd.DataFrame,
     sim_df: pd.DataFrame,
     n: int, 
     k: int = 10
-):            
+) -> np.ndarray:
+    """
+    Generate top-K movie recommendations for a user using the rating prediction function.
+
+    Parameters
+    ----------
+    user_id : int
+        ID of the user.
+    test : pd.DataFrame
+        Test dataset containing movie IDs to consider for recommendation.
+    predict_fn : callable
+        Function that predicts the rating for a user-movie pair.
+    train_prep : pd.DataFrame
+        User-item rating matrix used for training.
+    sim_df : pd.DataFrame
+        Item-item or user-user similarity matrix.
+    n : int
+        Number of nearest neighbor items or users used by the predictor.
+    k : int, optional (default=10)
+        Number of top recommendations to return.
+
+    Returns
+    -------
+    np.ndarray
+        Array of top-K recommended movie_id, sorted by predicted rating descending.
+    """            
 
     movie_list = test.movie_id.unique()
     rated_movies = train_prep.loc[user_id].dropna().index.values
@@ -83,5 +150,7 @@ def recommend(
         )
         pred_ratings.append(pred_rating)
     
-    return pd.DataFrame(pred_ratings, index=candidates).sort_values(by=0, ascending=False).head(k).index.values
+    return pd.DataFrame(pred_ratings, index=candidates)\
+        .sort_values(by=0, ascending=False)\
+        .head(k).index.values
     

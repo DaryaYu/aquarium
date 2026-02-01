@@ -18,19 +18,21 @@ project_root/
  │       ├── movies.dat
  │       ├── ratings.dat
  │       └── users.dat
- ├── eda/                                # exploratory notebooks
+ ├── eda/                                # exploratory notebook
  ├── experiments/                        # notebooks with experiments
- │   ├── similarity_based_cb/            # experiments with similarity-based content-based approach
- │   ├── similarity_based_cf/            # experiments with similarity-based collaborative filtering
- │   ├── matrix_factorization_funksvd/   # experiments with matrix factorization FunkSVD
- │   └── matrix_factorization_als/       # experiments with matrix factorization ALS algorithm
+ │   ├── content_based_filtering.ipynb   # experiments with similarity-based content-based approach
+ │   ├── similarity_based_cf.ipynb       # experiments with similarity-based collaborative filtering
+ │   ├── svd_experiment.ipynb            # experiments with matrix factorization FunkSVD
+ │   └── als_experiment.ipynb            # experiments with matrix factorization ALS algorithm
  ├── src/                                # core source code
- │   ├── models/                         # algorithm implementations
+ │   ├── models/                         # algorithms implementations
  │   ├── data_reading.py                 # raw data reading functions
  │   └── evaluation.py                   # metrics and evaluation functions
  ├── scripts/                            # helper scripts
  │   └── data_loader.py                  # data loader
  ├── requirements.txt                    # pip dependencies
+ ├── Dockerfile                          # container build instructions
+ ├── docker-compose.yml                  # container orchestration configuration
  └── README.md                           # project overview
 ```
 
