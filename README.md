@@ -20,17 +20,19 @@ project_root/
  │       └── users.dat
  ├── eda/                                # exploratory notebooks
  ├── experiments/                        # notebooks with experiments
- │   ├── similarity_based_cb/            # experiments with similarity-based content-based approach
- │   ├── similarity_based_cf/            # experiments with similarity-based collaborative filtering
- │   ├── matrix_factorization_funksvd/   # experiments with matrix factorization FunkSVD
- │   └── matrix_factorization_als/       # experiments with matrix factorization ALS algorithm
+ │   ├── content_based_filtering.ipynb   # experiments with similarity-based content-based approach
+ │   ├── similarity_based_cf.ipynb       # experiments with similarity-based collaborative filtering
+ │   ├── svd_experiment.ipynb            # experiments with matrix factorization FunkSVD
+ │   └── als_experiment.ipynb            # experiments with matrix factorization ALS algorithm
  ├── src/                                # core source code
- │   ├── models/                         # algorithm implementations
+ │   ├── models/                         # algorithms implementations
  │   ├── data_reading.py                 # raw data reading functions
  │   └── evaluation.py                   # metrics and evaluation functions
  ├── scripts/                            # helper scripts
  │   └── data_loader.py                  # data loader
  ├── requirements.txt                    # pip dependencies
+ ├── Dockerfile                          # container build instructions
+ ├── docker-compose.yml                  # container orchestration 
  └── README.md                           # project overview
 ```
 
@@ -82,5 +84,5 @@ ratings = read_ratings_file()
 users = read_users_file()
 ```
 
-Link to the incomplete version of the summary report. Перенесемо з гуглдокс на :
+Link to the incomplete version of the summary report. Перенесемо з гуглдокс на іншу платформу):
 https://docs.google.com/document/d/1VZ0rPdKpjf1U8PXjDFKA07M6O1uOtA0y4syfI4E8s9U/edit?usp=sharing
