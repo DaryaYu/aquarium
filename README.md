@@ -18,7 +18,7 @@ project_root/
  │       ├── movies.dat
  │       ├── ratings.dat
  │       └── users.dat
- ├── eda/                                # exploratory notebooks
+ ├── eda/                                # exploratory notebook
  ├── experiments/                        # notebooks with experiments
  │   ├── content_based_filtering.ipynb   # experiments with similarity-based content-based approach
  │   ├── similarity_based_cf.ipynb       # experiments with similarity-based collaborative filtering
@@ -83,6 +83,3 @@ movies = read_movies_file()
 ratings = read_ratings_file()
 users = read_users_file()
 ```
-
-Link to the incomplete version of the summary report. Перенесемо з гуглдокс на іншу платформу):
-https://docs.google.com/document/d/1VZ0rPdKpjf1U8PXjDFKA07M6O1uOtA0y4syfI4E8s9U/edit?usp=sharing
