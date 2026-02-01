@@ -101,6 +101,58 @@ def evaluate_rmse(
     return np.sqrt(np.mean((np.array(preds) - np.array(actuals)) ** 2))
 
 
+def evaluate_mape(
+        test: pd.DataFrame, 
+        predict_fn: callable,
+        **predict_kwargs
+) -> float:
+    """
+    Evaluate rating prediction model using Mean Absolute Percentage Error (MAPE).
+    The function computes MAPE by comparing predicted ratings with true ratings
+    on test set. For each (user, item) interaction in the test data,
+    the provided prediction function is called to generate rating estimate.
+    Predictions that return NaN are excluded from the evaluation.
+
+    Parameters
+    ----------
+    test : pd.DataFrame
+        Test dataset containing user-item interactions.
+        Expected columns include at least:
+        - 'user_id'
+        - 'movie_id'
+        - 'rating'
+    predict_fn : callable
+        Function that predicts rating for the given user and item.
+        It must accept 'user_id' and 'movie_id' as keyword arguments and
+        return a single float value or NaN if a prediction cannot be calculated.
+    **predict_kwargs
+        Additional keyword arguments passed to predict_fn. 
+
+    Returns
+    -------
+    float
+        MAPE computed over all valid predictions.
+    """
+    
+    preds, actuals = [], []
+
+    for row in test.itertuples():
+        user_id = row.user_id
+        movie_id = row.movie_id
+
+        pred = predict_fn(
+            user_id=user_id, 
+            movie_id=movie_id,
+            **predict_kwargs
+        )
+        
+        if not np.isnan(pred):
+            preds.append(pred)
+            actuals.append(row.rating) 
+
+    return np.mean(np.abs((np.array(actuals) - np.array(preds)) / np.array(actuals))) * 100
+
+
 def evaluate_precision_at_k(
     test: pd.DataFrame,
     recommend_k_fn: callable,

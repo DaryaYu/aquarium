@@ -81,3 +81,6 @@ movies = read_movies_file()
 ratings = read_ratings_file()
 users = read_users_file()
 ```
+
+Link to the incomplete version of the summary report. Перенесемо з гуглдокс на :
+https://docs.google.com/document/d/1VZ0rPdKpjf1U8PXjDFKA07M6O1uOtA0y4syfI4E8s9U/edit?usp=sharing
