@@ -32,7 +32,7 @@ project_root/
  │   └── data_loader.py                  # data loader
  ├── requirements.txt                    # pip dependencies
  ├── Dockerfile                          # container build instructions
- ├── docker-compose.yml                  # container orchestration 
+ ├── docker-compose.yml                  # container orchestration configuration
  └── README.md                           # project overview
 ```
 
