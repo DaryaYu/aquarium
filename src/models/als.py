@@ -13,12 +13,6 @@ def solve_with_als(
     random_seed=42,
     verbose=True,
 ):
-    if verbose:
-        print(f"--- Running ALS with parameters ---")
-        print(f"Alpha: {alpha}")
-        print(f"Iterations: {iterations}")
-        print(f"Factors: {factors}")
-        print(f"Regularization: {regularization}")
 
     confidence_matrix = alpha * ratings_matrix
     num_users, num_items = confidence_matrix.shape
