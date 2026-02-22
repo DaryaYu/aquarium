@@ -7,7 +7,9 @@ The recommendation system approaches cover:
   - Collaborative filtering (user-user and item-item) with different similarity functions;
 - Matrix factorization:
   - FunkSVD;
-  - Alternating Least Squares.
+  - Alternating Least Squares;
+- Learning-to-Rank with Pairwise Optimization:
+  - BPR-Opt.  
 
 ---
 ## Project Structure
@@ -24,9 +26,9 @@ project_root/
  │   ├── similarity_based_cf.ipynb       # experiments with similarity-based collaborative filtering
  │   ├── svd_experiment.ipynb            # experiments with matrix factorization FunkSVD
  │   ├── als_experiment.ipynb            # experiments with matrix factorization ALS algorithm
- │   ├── bpr_opt.ipynb                   #
- │   ├── online_evaluation_ab.ipynb            # 
- │   └── online_evaluation_  
+ │   ├── bpr_opt.ipynb                   # experiments with BPR-Opt model
+ │   ├── online_evaluation_ab.ipynb      # online evaluation simulation with A/B tests
+ │   └── online_evaluation_bandits.ipynb # online evaluation simulation with multi-armed bandits 
  ├── src/                                # core source code
  │   ├── models/                         # algorithms implementations
  │   ├── data_reading.py                 # raw data reading functions
