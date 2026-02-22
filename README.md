@@ -23,7 +23,10 @@ project_root/
  │   ├── content_based_filtering.ipynb   # experiments with similarity-based content-based approach
  │   ├── similarity_based_cf.ipynb       # experiments with similarity-based collaborative filtering
  │   ├── svd_experiment.ipynb            # experiments with matrix factorization FunkSVD
- │   └── als_experiment.ipynb            # experiments with matrix factorization ALS algorithm
+ │   ├── als_experiment.ipynb            # experiments with matrix factorization ALS algorithm
+ │   ├── bpr_opt.ipynb                   #
+ │   ├── online_evaluation_ab.ipynb            # 
+ │   └── online_evaluation_  
  ├── src/                                # core source code
  │   ├── models/                         # algorithms implementations
  │   ├── data_reading.py                 # raw data reading functions
