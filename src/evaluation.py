@@ -276,3 +276,125 @@ def evaluate_precision_at_k(
 
     return sum(precisions) / len(precisions)
 
+
+def evaluate_recall_at_k(
+    test: pd.DataFrame,
+    recommend_k_fn: callable,
+    k: int = 10,
+    **recommend_kwargs
+) -> float:
+    """
+    Evaluate a recommender system using Recall@K metric.
+    The function measures how many of the relevant items for a user
+    are successfully retrieved in the top-K recommendations,
+    averaged across all users in the test set.
+    An item is considered relevant if its true rating in the test set is >= 4.
+
+    Parameters
+    ----------
+    test : pd.DataFrame
+        Test dataset containing user-item interactions.
+        Expected columns:
+        - 'user_id'
+        - 'movie_id'
+        - 'rating'
+    recommend_k_fn : callable
+        Function that generates top-K recommendations for a given user.
+        Must accept 'user_id' and 'k' as keyword arguments and return
+        an array of recommended movie_id.
+    k : int, optional (default=10)
+        Number of items to recommend.
+    **recommend_kwargs
+        Additional keyword arguments passed to recommend_k_fn.
+
+    Returns
+    -------
+    float
+        Mean Recall@K across all users in the test set.
+    """
+
+    recalls = []
+
+    for user_id in test.user_id.unique():
+        rec = recommend_k_fn(
+            user_id=user_id,
+  #          test=test,
+            k=k,
+            **recommend_kwargs
+        )
+
+        fact = test[
+            (test.user_id == user_id) & (test.rating >= 4)
+        ].movie_id.values
+
+        # Skip users with no relevant items
+        if len(fact) == 0:
+            continue
+
+        recalls.append(len(np.intersect1d(rec, fact)) / len(fact))
+
+    return sum(recalls) / len(recalls) if recalls else 0
+
+
+def evaluate_ndcg_at_k(
+    test: pd.DataFrame,
+    recommend_k_fn: callable,
+    k: int = 10,
+    **recommend_kwargs
+) -> float:
+    """
+    Evaluate a recommender system using NDCG@K metric.
+
+    Parameters
+    ----------
+    test : pd.DataFrame
+        Must contain columns:
+        - 'user_id'
+        - 'movie_id'
+        - 'rating'
+    recommend_k_fn : callable
+        Function returning top-K movie_id for a user.
+    k : int
+        Number of recommendations.
+    **recommend_kwargs
+        Extra args for recommendation function.
+
+    Returns
+    -------
+    float
+        Mean NDCG@K across all users.
+    """
+
+    ndcgs = []
+
+    for user_id in test.user_id.unique():
+
+        rec = recommend_k_fn(
+            user_id=user_id,
+ #           test=test,
+            k=k,
+            **recommend_kwargs
+        )
+
+        # Relevant items
+        fact = test[test.user_id == user_id] \
+            .sort_values(['rating'], ascending=False)\
+            .movie_id.values
+
+        if len(fact) == 0:
+            continue
+
+        # Compute DCG
+        dcg = 0.0
+        for rank, item in enumerate(rec, start=1):
+            if item in fact:
+                dcg += 1 / np.log2(rank + 1)
+
+        # Compute IDCG
+        ideal_hits = min(len(fact), k)
+        idcg = sum(1 / np.log2(i + 1) for i in range(1, ideal_hits+1))
+
+        if idcg > 0:
+            ndcgs.append(dcg/idcg)
+
+    return np.mean(ndcgs) if ndcgs else 0
