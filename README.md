@@ -14,7 +14,9 @@ The recommendation system approaches cover:
   - PageRank;
 - Learning-to-Rank with Pairwise Optimization:
   - BPR-Opt;
-- Hybrid 
+- Hybrid Recommender Systems.
+Also, online evaluation simulations are implemented: A/B testing and multi-armed bandits (e-greedy and Thompson Sampling).
+
 ---
 ## Project Structure
 ```
