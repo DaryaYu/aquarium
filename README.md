@@ -8,9 +8,13 @@ The recommendation system approaches cover:
 - Matrix factorization:
   - FunkSVD;
   - Alternating Least Squares;
+- Ranking Heuristics & Graph-Based Signals:
+  - Popularity-based;
+  - Recency-based;
+  - PageRank;
 - Learning-to-Rank with Pairwise Optimization:
-  - BPR-Opt.  
-
+  - BPR-Opt;
+- Hybrid 
 ---
 ## Project Structure
 ```
@@ -27,6 +31,7 @@ project_root/
  │   ├── svd_experiment.ipynb            # experiments with matrix factorization FunkSVD
  │   ├── als_experiment.ipynb            # experiments with matrix factorization ALS algorithm
  │   ├── bpr_opt.ipynb                   # experiments with BPR-Opt model
+ │   ├── hybrid_experiment.ipynb         # experiments with hybrid approaches
  │   ├── online_evaluation_ab.ipynb      # online evaluation simulation with A/B tests
  │   └── online_evaluation_bandits.ipynb # online evaluation simulation with multi-armed bandits 
  ├── src/                                # core source code
