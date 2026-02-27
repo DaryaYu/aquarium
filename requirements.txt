@@ -11,3 +11,4 @@ wheel==0.45.1
 matplotlib==3.10.8
 seaborn==0.13.2
 tqdm==4.67.1
+torch==2.5.1
